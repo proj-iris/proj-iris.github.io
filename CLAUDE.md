@@ -25,4 +25,4 @@ There is no build step. GitHub Pages serves the repo root of `main` at the custo
 
 ## Content
 
-Project facts and the member list come from the coordination repo (`proj-iris/project-management`, mainly `docs/team.md`); keep them in sync with it. Emails, admin staff and unconfirmed ECR candidates are not listed. The Ph.D. call has a deadline (2026-11-20 for the April 2027 start), so update or remove the "Join us" box once it passes.
+Project facts and the member list come from the coordination repo (`proj-iris/project-management`, mainly `docs/team.md`); keep them in sync with it. Emails, admin staff and unconfirmed ECR candidates are not listed. The Ph.D. call has a deadline (2026-11-20 for the April 2027 start), so update or remove the "Join us" box once it passes. `phd-call.pdf` is the published call: a copy of the PDF made from `training/ecr-call.md` in the coordination repo. Replace it whenever the call changes, and keep the stipend and research-budget figures in the "Join us" box in step with it. Only figures already in the public call go on the site; project budgets do not.

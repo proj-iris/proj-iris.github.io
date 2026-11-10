@@ -197,6 +197,20 @@
       ul.members b { display: block; color: var(--strong); font-weight: 500; font-size: .95rem; }
       .callout { border-color: #b394df55; background: #b394df0f; padding: 1.3rem 1.4rem; }
       .callout h2 { margin-bottom: .8rem; }
+      .callout .facts { margin: 1.1rem 0; }
+      .callout .fact { background: #ffffff08; }
+      .after-facts { margin-top: 0; }
+      .button {
+        display: inline-block;
+        margin-top: .4rem;
+        padding: .5rem .95rem;
+        border: 1px solid #b394df88;
+        border-radius: 999px;
+        color: var(--strong);
+        text-decoration: none;
+        font-size: .9rem;
+      }
+      .button:hover { background: #b394df26; }
       .why summary {
         display: flex;
         align-items: center;
@@ -330,8 +344,13 @@
       <section id="join">
         <div class="card callout">
           <h2>Funded Ph.D. positions</h2>
-          <p>The project offers funded Ph.D. positions at the University of Aizu for Vietnamese researchers, starting in April or October 2027. Students work across the whole chip flow, from AI models and hardware design to FPGA prototypes and real chips.</p>
-          <p>For the April 2027 start, apply by <strong>Friday, November 20, 2026, 5:00 PM (JST)</strong>. Email a CV, a short research statement, academic transcripts and an English test score to <a href="mailto:khanh@u-aizu.ac.jp?subject=NEXUS%20Ph.D.%20application">khanh@u-aizu.ac.jp</a>.</p>
+          <p>The project offers <strong>two funded Ph.D. positions</strong> at the University of Aizu for Vietnamese researchers, starting in April or October 2027. Students work across the whole chip flow, from AI models and hardware design to FPGA prototypes and real chips.</p>
+          <div class="facts">
+            <div class="card fact"><b>¥2.4M / year</b><span>JST research stipend (¥200,000 a month) until June 2030</span></div>
+            <div class="card fact"><b>¥1.5M / year</b><span>personal research budget</span></div>
+          </div>
+          <p class="after-facts">For the April 2027 start, apply by <strong>Friday, November 20, 2026, 5:00 PM (JST)</strong>. Email a CV, a short research statement, academic transcripts and an English test score to <a href="mailto:khanh@u-aizu.ac.jp?subject=NEXUS%20Ph.D.%20application">khanh@u-aizu.ac.jp</a>.</p>
+          <p><a class="button" href="phd-call.pdf">Read the full call (PDF)</a></p>
         </div>
       </section>
 
