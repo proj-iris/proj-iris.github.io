@@ -6,696 +6,383 @@
     <meta name="theme-color" content="#171321">
     <meta name="description" content="IRIS — a low-power, event-driven AI system-on-chip for edge computing. A JST NEXUS Japan–Vietnam joint research project of the University of Aizu and Le Quy Don Technical University (2027–2030).">
     <title>IRIS — Low-power event-driven AI chip</title>
+    <link rel="icon" href="iris-logo-transparent-no-text.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500&display=swap" rel="stylesheet">
     <style>
-      :root { color-scheme: dark; }
-      html { scroll-behavior: smooth; }
+      :root {
+        color-scheme: dark;
+        --bg: #171321;
+        --surface: #ffffff05;
+        --line: #ffffff14;
+        --text: #c9cfd6;
+        --muted: #9aa6b0;
+        --strong: #f5efff;
+        --accent: #b394df;
+        --accent-2: #c5a6eb;
+        --header-h: 64px;
+      }
       * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 1rem); }
+      @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
       body {
         margin: 0;
-        background: #171321;
-        color: #edf1e8;
+        background: var(--bg);
+        color: var(--text);
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      }
-      #field {
-        position: fixed;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 0;
-      }
-      #spark {
-        position: fixed;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 2;
-        pointer-events: none;
-      }
-      main {
-        position: relative;
-        z-index: 1;
-        min-height: 100svh;
-        display: grid;
-        grid-template-rows: 1fr auto;
-        text-align: center;
-        pointer-events: none;
-      }
-      .hero { display: grid; place-items: center; padding: 2rem 1rem 0; }
-      .mark { width: clamp(170px, 28vmin, 260px); }
-      .mark img { display: block; width: 100%; height: auto; }
-      footer {
-        padding: 2.5rem 1.5rem 2.5rem;
-        background: linear-gradient(to bottom, #17132100, #171321e6 45%);
-      }
-      p {
-        margin: 0;
-        color: #aab9b0;
-        font-size: .8rem;
-        letter-spacing: .16em;
-        line-height: 1.8;
-        text-transform: uppercase;
-      }
-      .status {
-        display: inline-flex;
-        align-items: center;
-        gap: .6rem;
-        margin-top: 1.25rem;
-        padding: .5rem .85rem;
-        border: 1px solid #ffffff18;
-        border-radius: 999px;
-        color: #8c9ba4;
-        font-size: .65rem;
-        letter-spacing: .12em;
-      }
-      .status::before {
-        content: "";
-        width: 5px;
-        height: 5px;
-        border-radius: 50%;
-        background: #b394df;
-      }
-      .status { text-decoration: none; pointer-events: auto; }
-      .status:hover { border-color: #b394df66; color: #c5a6eb; }
-
-      /* Information below the hero; opaque so it scrolls over the animation. */
-      .info {
-        position: relative;
-        z-index: 3;
-        background: #171321;
-        border-top: 1px solid #ffffff12;
-        padding: 4rem 1rem 3rem;
-        line-height: 1.65;
         font-size: 1rem;
+        line-height: 1.65;
       }
-      .info .wrap { max-width: 760px; margin: 0 auto; }
-      .info section + section { margin-top: 3.5rem; }
-      .info h1, .info h2 {
+      a { color: var(--accent-2); }
+      h1, h2, .brand {
         font-family: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
         font-weight: 500;
-        color: #f5efff;
+        color: var(--strong);
         letter-spacing: -.01em;
       }
-      .info h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1.2; margin: 0 0 1rem; }
-      .info h2 { font-size: 1.25rem; margin: 0 0 .9rem; }
-      .info p, .info li {
-        color: #c9cfd6;
-        font-size: 1rem;
-        letter-spacing: normal;
-        text-transform: none;
-        line-height: 1.65;
+      p { margin: 0; }
+      p + p { margin-top: .8rem; }
+      strong { color: var(--strong); font-weight: 600; }
+
+      /* Header and menu */
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        height: var(--header-h);
+        background: #171321e6;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--line);
       }
-      .info p + p { margin-top: .8rem; }
-      .info ul { margin: .4rem 0 0; padding-left: 1.2rem; }
-      .info li + li { margin-top: .35rem; }
-      .info a { color: #c5a6eb; }
-      .info strong { color: #f5efff; font-weight: 600; }
+      .bar {
+        max-width: 1040px;
+        height: 100%;
+        margin: 0 auto;
+        padding: 0 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+        color: var(--strong);
+        text-decoration: none;
+        font-size: 1.2rem;
+        letter-spacing: .14em;
+      }
+      .brand img { height: 32px; width: auto; display: block; }
+      .menu ul { list-style: none; margin: 0; padding: 0; display: flex; gap: .25rem; }
+      .menu a {
+        display: block;
+        padding: .45rem .75rem;
+        border-radius: 999px;
+        color: var(--muted);
+        text-decoration: none;
+        font-size: .9rem;
+      }
+      .menu a:hover { color: var(--strong); background: #ffffff0a; }
+      .menu a.active { color: var(--strong); background: #b394df26; }
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: var(--strong);
+        padding: .4rem .6rem;
+        font: inherit;
+        font-size: .9rem;
+        cursor: pointer;
+      }
+      @media (max-width: 760px) {
+        .menu-toggle { display: block; }
+        .menu {
+          display: none;
+          position: absolute;
+          top: var(--header-h);
+          left: 0;
+          right: 0;
+          background: var(--bg);
+          border-bottom: 1px solid var(--line);
+          padding: .5rem 1rem 1rem;
+        }
+        .menu.open { display: block; }
+        .menu ul { flex-direction: column; }
+        .menu a { border-radius: 8px; padding: .6rem .75rem; font-size: 1rem; }
+      }
+
+      /* Content */
+      main { max-width: 760px; margin: 0 auto; padding: 0 1rem; }
+      section { padding: 3.5rem 0 0; }
+      h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); line-height: 1.15; margin: 0 0 1.1rem; }
+      h2 { font-size: 1.4rem; margin: 0 0 1rem; }
+      h1 + .subtitle {
+        margin: -.5rem 0 1.4rem;
+        font-family: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: clamp(1.2rem, 3vw, 1.5rem);
+        line-height: 1.3;
+        color: var(--accent-2);
+      }
       .eyebrow {
-        color: #b394df !important;
-        font-size: .75rem !important;
-        letter-spacing: .16em !important;
-        text-transform: uppercase !important;
-        margin-bottom: .6rem !important;
+        color: var(--accent);
+        font-size: .75rem;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+        margin-bottom: .8rem;
       }
+      .lead { font-size: 1.1rem; }
+      ul.points { margin: 0; padding-left: 1.2rem; }
+      ul.points li + li { margin-top: .5rem; }
       .facts {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
         gap: .75rem;
-        margin-top: 1.5rem;
+        margin-top: 1.75rem;
       }
-      .fact {
-        border: 1px solid #ffffff14;
+      .card {
+        border: 1px solid var(--line);
         border-radius: 10px;
-        padding: .9rem 1rem;
-        background: #ffffff05;
+        padding: 1rem 1.1rem;
+        background: var(--surface);
       }
       .fact b {
         display: block;
         font-family: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
         font-weight: 500;
-        font-size: 1.35rem;
-        color: #f5efff;
+        font-size: 1.4rem;
+        color: var(--strong);
       }
-      .fact span { color: #9aa6b0; font-size: .85rem; }
+      .fact span { color: var(--muted); font-size: .85rem; }
       .partners {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: .75rem;
       }
-      .partner {
-        border: 1px solid #ffffff14;
-        border-radius: 10px;
-        padding: 1rem 1.1rem;
+      /* Team cards share one height: the Japan card sets it, the Vietnam list scrolls. */
+      .partners { align-items: stretch; }
+      .partners .card { display: flex; flex-direction: column; }
+      .partners .scroll {
+        flex: 1 1 0;
+        min-height: 0;
+        contain: size;
+        overflow-y: auto;
+        margin-top: .7rem;
+        padding-right: .5rem;
+        scrollbar-width: thin;
+        scrollbar-color: #b394df66 transparent;
+        mask-image: linear-gradient(to bottom, #000 calc(100% - 2rem), transparent);
+        -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 2rem), transparent);
       }
-      .partner p { font-size: .95rem; }
-      .partners { align-items: start; }
-      .info ul.members { list-style: none; padding: 0; margin: .6rem 0 0; }
-      .info ul.members li { font-size: .88rem; color: #9aa6b0; line-height: 1.45; }
-      .info ul.members li + li { margin-top: .45rem; }
-      .members b { display: block; color: #f5efff; font-weight: 500; font-size: .95rem; }
-      .partner .country { color: #9aa6b0; font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; }
-      .callout {
-        border: 1px solid #b394df55;
-        border-radius: 12px;
-        padding: 1.25rem 1.3rem;
-        background: #b394df0f;
+      .partners .scroll > ul.members:first-child { margin-top: 0; }
+      .partners .scroll:focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; }
+      @media (max-width: 620px) {
+        .partners .scroll { flex: none; contain: none; max-height: 26rem; }
       }
+      .label {
+        color: var(--muted);
+        font-size: .75rem;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+      }
+      .label + p { margin-top: .3rem; }
+      .label.sub { margin-top: 1.2rem; }
+      ul.members { list-style: none; padding: 0; margin: .7rem 0 0; }
+      ul.members li { font-size: .88rem; color: var(--muted); line-height: 1.45; }
+      ul.members li + li { margin-top: .5rem; }
+      ul.members b { display: block; color: var(--strong); font-weight: 500; font-size: .95rem; }
+      .callout { border-color: #b394df55; background: #b394df0f; padding: 1.3rem 1.4rem; }
+      .callout h2 { margin-bottom: .8rem; }
+      .why summary {
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+        cursor: pointer;
+        list-style: none;
+      }
+      .why summary::-webkit-details-marker { display: none; }
+      .why summary h2 { margin: 0; }
+      .why summary::after {
+        content: "";
+        width: .5rem;
+        height: .5rem;
+        border-right: 2px solid var(--accent);
+        border-bottom: 2px solid var(--accent);
+        transform: rotate(45deg) translateY(-3px);
+        transition: transform .2s;
+      }
+      .why[open] summary::after { transform: rotate(-135deg) translateY(-3px); }
+      .why[open] summary { margin-bottom: 1rem; }
+      .why summary:hover h2 { color: var(--accent-2); }
       .site-footer {
-        margin-top: 4rem;
-        padding: 1.5rem 0 0;
-        background: none;
-        border-top: 1px solid #ffffff12;
+        max-width: 760px;
+        margin: 4.5rem auto 0;
+        padding: 1.5rem 1rem 2.5rem;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: .85rem;
       }
-      .site-footer p { color: #8c9ba4; font-size: .85rem; }
     </style>
   </head>
   <body>
-    <canvas id="field" aria-hidden="true"></canvas>
-    <canvas id="spark" aria-hidden="true"></canvas>
-    <main>
-      <div class="hero">
-        <div class="mark" aria-hidden="true">
-          <img src="iris-logo-transparent.png" width="960" height="960" alt="">
+    <header class="site-header">
+      <div class="bar">
+        <a class="brand" href="#top">
+          <img src="iris-mark.svg" width="58" height="26" alt="IRIS">
+        </a>
+        <button class="menu-toggle" aria-expanded="false" aria-controls="menu">Menu</button>
+        <!-- Menu: to add a page section, add a <section id="..."> in main and a link here. -->
+        <nav class="menu" id="menu" aria-label="Sections">
+          <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#approach">Approach</a></li>
+            <li><a href="#team">Team</a></li>
+            <li><a href="#join">Join us</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#name">Why IRIS</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section id="about">
+        <p class="eyebrow">JST NEXUS · Japan–Vietnam joint research · 2027–2030</p>
+        <h1>IRIS</h1>
+        <p class="subtitle">A low-power, event-driven AI system-on-chip for edge computing</p>
+        <p class="lead">Many edge devices that need AI, such as monitoring cameras, robots and people or animal detectors, run on little power and can't send their data to the cloud. IRIS builds an AI chip that works with an <strong>event camera</strong>: the camera reports only the pixels that change, and the chip computes only when those changes arrive.</p>
+        <p>The project is a joint effort of the <strong>University of Aizu</strong> (Japan) and the <strong>Institute of System Integration, Le Quy Don Technical University</strong> (Vietnam). It runs from January 2027 to June 2030 and also trains early-career researchers in low-power chip design.</p>
+        <div class="facts">
+          <div class="card fact"><b>&lt; 1 W</b><span>ASIC power target</span></div>
+          <div class="card fact"><b>50 fps</b><span>real time at 50 MHz</span></div>
+          <div class="card fact"><b>80–90%</b><span>energy saving compared with an ANN on RGB frames</span></div>
         </div>
-      </div>
-      <footer>
-        <p>Low-power event-driven AI chip for the edge</p>
-        <a class="status" href="#about"><p>Learn more ↓</p></a>
-      </footer>
+      </section>
+
+      <section id="approach">
+        <h2>Approach</h2>
+        <ul class="points">
+          <li><strong>Event sensing.</strong> An event camera only reports changes, so a typical scene produces far less data than a normal camera.</li>
+          <li><strong>Spiking neural network accelerator.</strong> A dedicated event-driven accelerator processes only the incoming spikes and exploits sparsity in space and time.</li>
+          <li><strong>Approximate clock-gating.</strong> Inactive circuit blocks are switched off, and some clock events are skipped even when input is present, trading a small loss of accuracy for a large saving in energy.</li>
+          <li><strong>From model to silicon.</strong> The design goes from AI models and RTL through FPGA prototypes to ASIC tapeouts and a system deployed in real applications.</li>
+        </ul>
+      </section>
+
+      <section id="team">
+        <h2>Team</h2>
+        <div class="partners">
+          <div class="card">
+            <p class="label">Japan</p>
+            <p><strong><a href="https://u-aizu.ac.jp/en/">The University of Aizu</a></strong></p>
+            <ul class="members">
+              <li><b>DANG Nam Khanh</b> PI, Associate Professor</li>
+              <li><b>NITTA Koyo</b> Co-PI, Professor</li>
+              <li><b>BEN ABDALLAH Abderazek</b> Professor</li>
+              <li><b>SAITO Hiroshi</b> Professor</li>
+              <li><b>TOMIOKA Yoichi</b> Senior Associate Professor</li>
+              <li><b>SUZUKI Daisuke</b> Associate Professor</li>
+              <li><b>WANG Zhishang</b> Assistant Professor</li>
+            </ul>
+          </div>
+          <div class="card">
+            <p class="label">Vietnam</p>
+            <p><strong><a href="https://isi.lqdtu.edu.vn/">Institute of System Integration, Le Quy Don Technical University</a></strong></p>
+            <div class="scroll" tabindex="0" aria-label="Vietnam team members">
+            <ul class="members">
+              <li><b>HOANG Van Phuc</b> PI, Associate Professor, Director</li>
+              <li><b>NGUYEN Van Tinh</b> Lecturer</li>
+              <li><b>TRAN Thai Ha</b> Lecturer</li>
+              <li><b>NGUYEN Van Trung</b> Head of Research Center for IC Design</li>
+              <li><b>NGUYEN Tien Phat</b> Deputy Head of Department</li>
+              <li><b>BUI Quy Thang</b> Head of Department</li>
+              <li><b>VU Hoang Gia</b> Head of Lab</li>
+              <li><b>HOANG Thi Yen</b> Lecturer</li>
+              <li><b>HOANG Minh Thien</b> Deputy Head of Department</li>
+            </ul>
+            <p class="label sub">Collaborating institutions</p>
+            <ul class="members">
+              <li><b>PHAM Hoai Luan</b> Vietnam National University, Ho Chi Minh City</li>
+              <li><b>NGUYEN Duy Anh</b> University of Transport and Communications</li>
+              <li><b>MAI Duc Tho</b> Academy of Cryptography Techniques</li>
+              <li><b>NGUYEN Duc Minh</b> Hanoi University of Science and Technology</li>
+              <li><b>PHAM Thi Nhan</b> Hanoi University of Science and Technology</li>
+              <li><b>PHAM Xuan Thanh</b> Hanoi University of Industry</li>
+              <li><b>DO Ngoc Tuan</b> Telecommunications University</li>
+            </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="join">
+        <div class="card callout">
+          <h2>Funded Ph.D. positions</h2>
+          <p>The project offers funded Ph.D. positions at the University of Aizu for Vietnamese researchers, starting in April or October 2027. Students work across the whole chip flow, from AI models and hardware design to FPGA prototypes and real chips.</p>
+          <p>For the April 2027 start, apply by <strong>Friday, November 20, 2026, 5:00 PM (JST)</strong>. Email a CV, a short research statement, academic transcripts and an English test score to <a href="mailto:khanh@u-aizu.ac.jp?subject=NEXUS%20Ph.D.%20application">khanh@u-aizu.ac.jp</a>.</p>
+        </div>
+      </section>
+
+      <section id="contact">
+        <h2>Contact</h2>
+        <ul class="points">
+          <li>DANG Nam Khanh, University of Aizu: <a href="mailto:khanh@u-aizu.ac.jp">khanh@u-aizu.ac.jp</a></li>
+          <li>HOANG Van Phuc, Le Quy Don Technical University: <a href="mailto:phuchv@lqdtu.edu.vn">phuchv@lqdtu.edu.vn</a></li>
+        </ul>
+      </section>
+
+      <section id="name">
+        <details class="why">
+          <summary><h2>Why IRIS</h2></summary>
+          <p>The iris is the part of the eye that controls how much light comes in, and an event camera is an eye that sees only what changes. The logo is an eye drawn in dots, like spikes in a spiking neural network.</p>
+          <p>Iris is also the Japanese iris flower, <em>Iris ensata</em>, a nod to the project's home in Japan and the source of the purple colours.</p>
+          <p>In <em>hanakotoba</em>, the Japanese language of flowers, the iris (花菖蒲, <em>hanashōbu</em>) stands for “good news” (うれしい知らせ) and “I believe in you” (あなたを信じる). Good news fits a chip that wakes only when a message arrives, and trust fits a partnership between Japan and Vietnam.</p>
+        </details>
+      </section>
     </main>
-    <div class="info">
-      <div class="wrap">
-        <section id="about">
-          <p class="eyebrow">JST NEXUS · Japan–Vietnam joint research · 2027–2030</p>
-          <h1>A low-power, event-driven AI system-on-chip for edge computing</h1>
-          <p>Many edge devices that need AI, such as monitoring cameras, robots and people or animal detectors, run on little power and can't send their data to the cloud. IRIS builds an AI chip that works with an <strong>event camera</strong>: the camera reports only the pixels that change, and the chip computes only when those changes arrive.</p>
-          <p>The project is a joint effort of the <strong>University of Aizu</strong> (Japan) and the <strong>Institute of System Integration, Le Quy Don Technical University</strong> (Vietnam). It runs from January 2027 to June 2030 and also trains early-career researchers in low-power chip design.</p>
-          <div class="facts">
-            <div class="fact"><b>&lt; 1 W</b><span>ASIC power target</span></div>
-            <div class="fact"><b>50 fps</b><span>real time at 50 MHz</span></div>
-            <div class="fact"><b>80–90%</b><span>energy saving compared with an ANN on RGB frames</span></div>
-          </div>
-        </section>
 
-        <section id="approach">
-          <h2>Approach</h2>
-          <ul>
-            <li><strong>Event sensing.</strong> An event camera only reports changes, so a typical scene produces far less data than a normal camera.</li>
-            <li><strong>Spiking neural network accelerator.</strong> A dedicated event-driven accelerator processes only the incoming spikes and exploits sparsity in space and time.</li>
-            <li><strong>Approximate clock-gating.</strong> Inactive circuit blocks are switched off, and some clock events are skipped even when input is present, trading a small loss of accuracy for a large saving in energy.</li>
-            <li><strong>From model to silicon.</strong> The design goes from AI models and RTL through FPGA prototypes to ASIC tapeouts and a system deployed in real applications.</li>
-          </ul>
-        </section>
+    <footer class="site-footer">
+      Supported by JST NEXUS, Japan, Grant Number JPMJNX26D3. <a href="https://www.jst.go.jp/aspire/nexus/en/project/index.html">JST NEXUS projects</a>
+    </footer>
 
-        <section id="team">
-          <h2>Partners</h2>
-          <div class="partners">
-            <div class="partner">
-              <p class="country">Japan</p>
-              <p><strong><a href="https://u-aizu.ac.jp/en/">The University of Aizu</a></strong></p>
-              <ul class="members">
-                <li><b>DANG Nam Khanh</b> PI, Associate Professor</li>
-                <li><b>NITTA Koyo</b> Co-PI, Professor</li>
-                <li><b>BEN ABDALLAH Abderazek</b> Professor</li>
-                <li><b>SAITO Hiroshi</b> Professor</li>
-                <li><b>TOMIOKA Yoichi</b> Senior Associate Professor</li>
-                <li><b>SUZUKI Daisuke</b> Associate Professor</li>
-                <li><b>WANG Zhishang</b> Assistant Professor</li>
-              </ul>
-            </div>
-            <div class="partner">
-              <p class="country">Vietnam</p>
-              <p><strong>Institute of System Integration, Le Quy Don Technical University</strong></p>
-              <ul class="members">
-                <li><b>HOANG Van Phuc</b> PI, Associate Professor, Director</li>
-                <li><b>NGUYEN Van Tinh</b> Lecturer</li>
-                <li><b>TRAN Thai Ha</b> Lecturer</li>
-                <li><b>NGUYEN Van Trung</b> Head of Research Center for IC Design</li>
-                <li><b>NGUYEN Tien Phat</b> Deputy Head of Department</li>
-                <li><b>BUI Quy Thang</b> Head of Department</li>
-                <li><b>VU Hoang Gia</b> Head of Lab</li>
-                <li><b>HOANG Thi Yen</b> Lecturer</li>
-                <li><b>PHAM Cao Dai</b> Senior Lecturer</li>
-                <li><b>HOANG Minh Thien</b> Deputy Head of Department</li>
-              </ul>
-              <p class="country" style="margin-top:1.1rem">Collaborating institutions</p>
-              <ul class="members">
-                <li><b>PHAM Hoai Luan</b> Vietnam National University, Ho Chi Minh City</li>
-                <li><b>NGUYEN Duy Anh</b> University of Transport and Communications</li>
-                <li><b>MAI Duc Tho</b> Academy of Cryptography Techniques</li>
-                <li><b>NGUYEN Duc Minh</b> Hanoi University of Science and Technology</li>
-                <li><b>PHAM Thi Nhan</b> Hanoi University of Science and Technology</li>
-                <li><b>PHAM Xuan Thanh</b> Hanoi University of Industry</li>
-                <li><b>DO Ngoc Tuan</b> Telecommunications University</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <section id="join">
-          <div class="callout">
-            <h2>Funded Ph.D. positions</h2>
-            <p>The project offers funded Ph.D. positions at the University of Aizu for Vietnamese researchers, starting in April or October 2027. Students work across the whole chip flow, from AI models and hardware design to FPGA prototypes and real chips.</p>
-            <p>For the April 2027 start, apply by <strong>Friday, November 20, 2026, 5:00 PM (JST)</strong>. Email a CV, a short research statement, academic transcripts and an English test score to <a href="mailto:khanh@u-aizu.ac.jp?subject=NEXUS%20Ph.D.%20application">khanh@u-aizu.ac.jp</a>.</p>
-          </div>
-        </section>
-
-        <section id="contact">
-          <h2>Contact</h2>
-          <ul>
-            <li>DANG Nam Khanh, University of Aizu: <a href="mailto:khanh@u-aizu.ac.jp">khanh@u-aizu.ac.jp</a></li>
-            <li>HOANG Van Phuc, Le Quy Don Technical University: <a href="mailto:phuchv@lqdtu.edu.vn">phuchv@lqdtu.edu.vn</a></li>
-          </ul>
-        </section>
-
-        <footer class="site-footer">
-          <p>Supported by JST NEXUS, Japan, Grant Number JPMJNX26D3. <a href="https://www.jst.go.jp/aspire/nexus/en/project/index.html">JST NEXUS projects</a></p>
-        </footer>
-      </div>
-    </div>
     <script>
-      // Iris field: radial fibers of leaky integrate-and-fire neurons around the logo.
-      // The outline slowly morphs between an eye's iris (circle) and an iris flower
-      // (three falls + three standards). Spikes travel inward along each fiber,
-      // jump onto the logo's own dots and hop inward to the pupil; pointer motion
-      // acts as an event-camera stimulus.
+      // Mobile menu toggle, and highlight the menu link of the section in view.
       (() => {
-        const field = document.getElementById('field');
-        const ctx = field.getContext('2d');
-        const spark = document.getElementById('spark');
-        const sctx = spark.getContext('2d');
-        const mark = document.querySelector('.mark');
-        const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const toggle = document.querySelector('.menu-toggle');
+        const menu = document.getElementById('menu');
+        const links = [...menu.querySelectorAll('a')];
 
-        const TAU = Math.PI * 2;
-        const PHI0 = -Math.PI / 2;
-        const MORPH_PERIOD = 40;
-        // How far the eye opens into the flower: 1 is the full petal shape.
-        const FLOWER_STRENGTH = 0.7;
-        // Japanese iris (Iris ensata), front view: three broad, round, ruffled falls
-        // spreading down and outward, with small narrow standards between them.
-        // Each petal is a disk (center distance d, radius rho) relative to rOut.
-        const DEG = Math.PI / 180;
-        const PETALS = [
-          { at: 90, d: 0.6, rho: 0.4, ruffle: 1 },
-          { at: 210, d: 0.6, rho: 0.4, ruffle: 1 },
-          { at: 330, d: 0.6, rho: 0.4, ruffle: 1 },
-          { at: 270, d: 0.46, rho: 0.15, ruffle: 0 },
-          { at: 30, d: 0.46, rho: 0.15, ruffle: 0 },
-          { at: 150, d: 0.46, rho: 0.15, ruffle: 0 },
-        ];
-        const INNER = [197, 166, 235];
-        const OUTER = [104, 76, 158];
+        toggle.addEventListener('click', () => {
+          const open = menu.classList.toggle('open');
+          toggle.setAttribute('aria-expanded', open);
+        });
+        links.forEach((a) => a.addEventListener('click', () => {
+          menu.classList.remove('open');
+          toggle.setAttribute('aria-expanded', false);
+        }));
 
-        // Dots of the logo's eye (x, y, r) in its 320-unit viewBox, from iris-logo-transparent.svg.
-        const LOGO = [125,110,3.5,145,110,3.5,175,110,3.5,195,110,3.5,100,120,3.5,120,120,3.5,200,120,3.5,220,120,3.5,85,130,3.5,105,130,3.5,215,130,3.5,235,130,3.5,60,140,3.5,80,140,3.5,100,140,3.5,220,140,3.5,240,140,3.5,260,140,3.5,45,150,3.5,65,150,3.5,85,150,3.5,105,150,3.5,215,150,3.5,235,150,3.5,255,150,3.5,275,150,3.5,20,160,3.5,40,160,3.5,60,160,3.5,80,160,3.5,100,160,3.5,220,160,3.5,240,160,3.5,260,160,3.5,280,160,3.5,300,160,3.5,45,170,3.5,65,170,3.5,85,170,3.5,105,170,3.5,215,170,3.5,235,170,3.5,255,170,3.5,275,170,3.5,60,180,3.5,80,180,3.5,100,180,3.5,220,180,3.5,240,180,3.5,260,180,3.5,85,190,3.5,105,190,3.5,215,190,3.5,235,190,3.5,100,200,3.5,120,200,3.5,200,200,3.5,220,200,3.5,125,210,3.5,145,210,3.5,175,210,3.5,195,210,3.5,198,160,4.5,196.14,171.74,4.5,190.74,182.34,4.5,182.34,190.74,4.5,171.74,196.14,4.5,160,198,4.5,148.26,196.14,4.5,137.66,190.74,4.5,129.26,182.34,4.5,123.86,171.74,4.5,122,160,4.5,123.86,148.26,4.5,129.26,137.66,4.5,137.66,129.26,4.5,148.26,123.86,4.5,160,122,4.5,171.74,123.86,4.5,182.34,129.26,4.5,190.74,137.66,4.5,196.14,148.26,4.5,184,160,4,180.78,172,4,172,180.78,4,160,184,4,148,180.78,4,139.22,172,4,136,160,4,139.22,148,4,148,139.22,4,160,136,4,172,139.22,4,180.78,148,4,171,160,3.8,165.5,169.53,3.8,154.5,169.53,3.8,149,160,3.8,154.5,150.47,3.8,165.5,150.47,3.8,160,160,3.5,160,100,3.5,160,220,3.5,120,100,3.5,140,100,3.5,180,100,3.5,200,100,3.5,105,110,3.5,215,110,3.5,80,120,3.5,240,120,3.5,65,130,3.5,255,130,3.5,40,140,3.5,280,140,3.5,40,180,3.5,280,180,3.5,65,190,3.5,255,190,3.5,80,200,3.5,240,200,3.5,105,210,3.5,215,210,3.5,120,220,3.5,140,220,3.5,180,220,3.5,200,220,3.5];
-        const L = LOGO.length / 3;
-        const PUPIL = 100; // the dot at (160, 160)
-        const TEXT_BOX = [72, 236, 248, 304]; // the IRIS lettering, in the same units, with margin
-        const SPIKE_SPEED = 110; // px per second, matching a hop along a fiber
-        const logoX = new Float32Array(L), logoY = new Float32Array(L);
-        const logoLast = new Float32Array(L).fill(-10);
-        // Each logo dot passes its spike to the nearest dot that sits closer to the pupil.
-        const logoNext = new Int16Array(L).fill(-1);
-        for (let j = 0; j < L; j++) {
-          const dj = Math.hypot(LOGO[j * 3] - 160, LOGO[j * 3 + 1] - 160);
-          let best = Infinity;
-          for (let n = 0; n < L; n++) {
-            const dn = Math.hypot(LOGO[n * 3] - 160, LOGO[n * 3 + 1] - 160);
-            if (dn > dj - 6) continue;
-            const gap = Math.hypot(LOGO[n * 3] - LOGO[j * 3], LOGO[n * 3 + 1] - LOGO[j * 3 + 1]);
-            if (gap < best) { best = gap; logoNext[j] = n; }
-          }
-        }
+        // A menu link to a collapsed section (Why IRIS) opens it.
+        const openTarget = (hash) => {
+          const d = hash && document.querySelector(hash + ' details');
+          if (d) d.open = true;
+        };
+        links.forEach((a) => a.addEventListener('click', () => openTarget(a.hash)));
+        openTarget(location.hash);
 
-        let W = 0, H = 0, dpr = 1, cx = 0, cy = 0, rIn = 0, rOut = 0, logoScale = 1;
-        let S = 0, K = 0, N = 0;
-        let v, shown, refr, last, px, py, jitter, petalR, isFall, entry, innerR;
-        let kColors = [];
-        let events = [];
-        let logoEvents = [];
-        let now = 0, nextVolley = 1.2;
-        const pointer = { x: 0, y: 0, seen: false, energy: 0 };
-
-        const glow = sprite('245,239,255');
-        const gold = sprite('242,210,122');
-
-        function sprite(rgb) {
-          const c = document.createElement('canvas');
-          c.width = c.height = 64;
-          const g = c.getContext('2d');
-          const grad = g.createRadialGradient(32, 32, 0, 32, 32, 32);
-          grad.addColorStop(0, `rgba(${rgb},1)`);
-          grad.addColorStop(0.22, `rgba(${rgb},.55)`);
-          grad.addColorStop(1, `rgba(${rgb},0)`);
-          g.fillStyle = grad;
-          g.fillRect(0, 0, 64, 64);
-          return c;
-        }
-
-        function locate() {
-          const b = mark.getBoundingClientRect();
-          cx = b.left + b.width / 2;
-          cy = b.top + b.height / 2;
-          rIn = b.width * 0.56;
-          logoScale = b.width / 320;
-          for (let j = 0; j < L; j++) {
-            logoX[j] = b.left + LOGO[j * 3] * logoScale;
-            logoY[j] = b.top + LOGO[j * 3 + 1] * logoScale;
-          }
-        }
-
-        function layout() {
-          dpr = Math.min(window.devicePixelRatio || 1, 2);
-          W = innerWidth;
-          H = innerHeight;
-          field.width = W * dpr;
-          field.height = H * dpr;
-          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-          spark.width = W * dpr;
-          spark.height = H * dpr;
-          sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-          locate();
-          rOut = Math.max(rIn + 100, Math.min(W, H) * 0.47);
-          const nextS = 6 * Math.round(Math.min(120, Math.max(54, rOut * 0.26)) / 6);
-          const nextK = Math.max(7, Math.min(18, Math.round((rOut - rIn * 0.6) / 20)));
-          if (nextS !== S || nextK !== K) allocate(nextS, nextK);
-        }
-
-        function allocate(s, k) {
-          S = s; K = k; N = S * K;
-          v = new Float32Array(N);
-          shown = new Float32Array(N);
-          refr = new Float32Array(N);
-          last = new Float32Array(N).fill(-10);
-          px = new Float32Array(N);
-          py = new Float32Array(N);
-          jitter = new Float32Array(S);
-          petalR = new Float32Array(S);
-          isFall = new Uint8Array(S);
-          entry = new Int16Array(S);
-          innerR = new Float32Array(S);
-          for (let i = 0; i < S; i++) {
-            const theta = PHI0 + (i / S) * TAU;
-            jitter[i] = 0.94 + Math.random() * 0.1;
-            // Entry point into the logo: the outermost eye dot lying closest to this fiber's direction.
-            let bestScore = Infinity;
-            for (let j = 0; j < L; j++) {
-              const dx = LOGO[j * 3] - 160, dy = LOGO[j * 3 + 1] - 160;
-              let delta = Math.abs(Math.atan2(dy, dx) - theta) % TAU;
-              if (delta > Math.PI) delta = TAU - delta;
-              const score = delta * 300 - Math.hypot(dx, dy);
-              if (score < bestScore) { bestScore = score; entry[i] = j; }
-            }
-            // The fiber starts just outside its entry dot, so the inner ring hugs the eye,
-            // but never on top of the IRIS lettering below it.
-            const e = entry[i];
-            let rho = Math.hypot(LOGO[e * 3] - 160, LOGO[e * 3 + 1] - 160) + 12;
-            const inText = (r) => {
-              const x = 160 + r * Math.cos(theta), y = 160 + r * Math.sin(theta);
-              return x > TEXT_BOX[0] && x < TEXT_BOX[2] && y > TEXT_BOX[1] && y < TEXT_BOX[3];
-            };
-            while (inText(rho)) rho += 2;
-            innerR[i] = rho;
-            let best = 0;
-            for (const p of PETALS) {
-              let delta = (theta - p.at * DEG) % TAU;
-              if (delta > Math.PI) delta -= TAU;
-              if (delta < -Math.PI) delta += TAU;
-              const sin = p.d * Math.sin(delta);
-              if (Math.abs(delta) > Math.PI / 2 || Math.abs(sin) >= p.rho) continue;
-              let r = p.d * Math.cos(delta) + Math.sqrt(p.rho * p.rho - sin * sin);
-              if (p.ruffle) {
-                r *= 1 + 0.025 * Math.sin(delta * 11) * Math.min(1, Math.abs(delta) * 3);
-                if (Math.abs(delta) < 14 * DEG) isFall[i] = 1;
-              }
-              best = Math.max(best, r);
-            }
-            petalR[i] = best;
-          }
-          kColors = [];
-          for (let j = 0; j < K; j++) {
-            const f = j / (K - 1);
-            const c = INNER.map((a, n) => Math.round(a + (OUTER[n] - a) * f));
-            kColors.push(`rgb(${c[0]},${c[1]},${c[2]})`);
-          }
-          events = [];
-          logoEvents = [];
-        }
-
-        function sendToLogo(fromX, fromY, to) {
-          const dist = Math.hypot(logoX[to] - fromX, logoY[to] - fromY);
-          logoEvents.push({ x0: fromX, y0: fromY, b: to, t0: now, t1: now + Math.max(0.12, dist / SPIKE_SPEED) });
-        }
-
-        function morph(t) {
-          const x = Math.min(1, Math.max(0, (0.5 - 0.5 * Math.cos((TAU * t) / MORPH_PERIOD)) * 1.4 - 0.2));
-          return x * x * (3 - 2 * x);
-        }
-
-        function geometry(m) {
-          const swirl = 0.05 * Math.sin(now * 0.04);
-          const breathe = 1 + 0.015 * Math.sin(now * 0.5);
-          for (let s = 0; s < S; s++) {
-            const theta = PHI0 + (s / S) * TAU;
-            const flower = Math.max(rIn * 1.08, rOut * petalR[s]);
-            const blend = m * FLOWER_STRENGTH;
-            const R = (rOut * jitter[s] * (1 - blend) + flower * blend) * breathe;
-            const r0 = innerR[s] * logoScale;
-            for (let k = 0; k < K; k++) {
-              const f = k / (K - 1);
-              // Spacing tightens toward the logo, as if the fibers converge into the eye.
-              const r = r0 + (R - r0) * Math.pow(f, 1.35);
-              const a = theta + swirl * f * f;
-              const i = s * K + k;
-              px[i] = cx + r * Math.cos(a);
-              py[i] = cy + r * Math.sin(a);
-            }
-          }
-        }
-
-        function fire(i) {
-          v[i] = 0;
-          refr[i] = 0.5;
-          last[i] = now;
-          const s = (i / K) | 0, k = i % K;
-          if (k > 0) {
-            const w = Math.random() < 0.9 ? 1.05 : 0.5;
-            events.push({ a: i, b: i - 1, t0: now, t1: now + 0.16 + Math.random() * 0.04, w });
-          } else if (Math.random() < 0.7) {
-            sendToLogo(px[i], py[i], entry[s]);
-          }
-          if (Math.random() < 0.2) {
-            const s2 = (s + (Math.random() < 0.5 ? 1 : S - 1)) % S;
-            events.push({ a: -1, b: s2 * K + k, t0: now, t1: now + 0.25, w: 0.35 });
-          }
-        }
-
-        function step(dt) {
-          now += dt;
-          const leak = Math.exp(-dt / 1.2);
-          const ease = 1 - Math.exp(-dt / 0.25);
-
-          if (now > nextVolley) {
-            const c = (Math.random() * S) | 0;
-            const half = 2 + ((Math.random() * S * 0.06) | 0);
-            for (let d = -half; d <= half; d++) {
-              const s = (c + d + S) % S;
-              events.push({ a: -1, b: s * K + K - 1, t0: now, t1: now + Math.abs(d) * 0.06 + Math.random() * 0.08, w: 1.3 });
-            }
-            nextVolley = now + 3 + Math.random() * 3;
-          }
-
-          for (let i = 0; i < N; i++) {
-            v[i] *= leak;
-            shown[i] += (v[i] - shown[i]) * ease;
-            if (refr[i] > 0) refr[i] -= dt;
-            if (Math.random() < 0.03 * dt) v[i] += 1.1;
-            if (i % K === K - 1 && Math.random() < 0.2 * dt) v[i] += 0.7;
-          }
-
-          if (pointer.energy > 0.01) {
-            const reach = 70;
-            for (let i = 0; i < N; i++) {
-              const d = Math.hypot(px[i] - pointer.x, py[i] - pointer.y);
-              if (d < reach) v[i] += pointer.energy * 0.5 * (1 - d / reach);
-            }
-            pointer.energy = 0;
-          }
-
-          const pending = [];
-          for (const e of events) {
-            if (e.t1 <= now) {
-              if (refr[e.b] <= 0) v[e.b] += e.w;
-            } else pending.push(e);
-          }
-          events = pending;
-
-          const travelling = [];
-          const arrived = [];
-          for (const e of logoEvents) (e.t1 <= now ? arrived : travelling).push(e);
-          logoEvents = travelling;
-          for (const e of arrived) {
-            logoLast[e.b] = now;
-            const n = logoNext[e.b];
-            if (n >= 0 && Math.random() < 0.92) sendToLogo(logoX[e.b], logoY[e.b], n);
-          }
-
-          for (let i = 0; i < N; i++) {
-            if (v[i] >= 1 && refr[i] <= 0) fire(i);
-          }
-        }
-
-        function draw(m) {
-          ctx.clearRect(0, 0, W, H);
-
-          // Fibers.
-          const fiber = ctx.createRadialGradient(cx, cy, rIn * 0.4, cx, cy, rOut * 1.05);
-          fiber.addColorStop(0, 'rgba(179,148,223,0.12)');
-          fiber.addColorStop(1, 'rgba(179,148,223,0)');
-          ctx.strokeStyle = fiber;
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          for (let s = 0; s < S; s++) {
-            const i0 = s * K;
-            ctx.moveTo(px[i0], py[i0]);
-            for (let k = 1; k < K; k++) ctx.lineTo(px[i0 + k], py[i0 + k]);
-          }
-          ctx.stroke();
-
-          // Neurons: brightness follows membrane potential.
-          for (let k = 0; k < K; k++) {
-            ctx.fillStyle = kColors[k];
-            const f = k / (K - 1);
-            // Dots shrink as they near the logo.
-            const size = 0.6 + 1.2 * Math.min(1, f * 2.2);
-            // Outer dots fade so the shape dissolves instead of ending on a hard edge.
-            const fade = 1 - 0.75 * f * f;
-            for (let s = 0; s < S; s++) {
-              const i = s * K + k;
-              ctx.globalAlpha = Math.min(1, (0.32 + 0.68 * shown[i]) * fade);
-              ctx.beginPath();
-              ctx.arc(px[i], py[i], size, 0, TAU);
-              ctx.fill();
-            }
-          }
-
-          ctx.globalCompositeOperation = 'lighter';
-
-          // Spike flashes. The base of each fall lights gold, like the iris flower's signal patch.
-          for (let i = 0; i < N; i++) {
-            const age = now - last[i];
-            if (age > 1.2) continue;
-            // Soft attack then slow decay, so flashes swell instead of popping.
-            const e = Math.min(1, age / 0.08) * Math.exp(-age / 0.32);
-            const s = (i / K) | 0, f = (i % K) / (K - 1);
-            const sz = (7 + 12 * Math.min(1, f * 2.2)) * (0.6 + 0.4 * e);
-            const golden = isFall[s] && f < 0.45 && m > 0.35;
-            ctx.globalAlpha = e * (golden ? m : 1);
-            ctx.drawImage(golden ? gold : glow, px[i] - sz / 2, py[i] - sz / 2, sz, sz);
-          }
-
-          // Spikes in transit along the fibers, each with a short fading tail.
-          for (const e of events) {
-            if (e.a < 0) continue;
-            const p = (now - e.t0) / (e.t1 - e.t0);
-            for (let j = 0; j < 4; j++) {
-              const q = p - j * 0.18;
-              if (q < 0) break;
-              const x = px[e.a] + (px[e.b] - px[e.a]) * q;
-              const y = py[e.a] + (py[e.b] - py[e.a]) * q;
-              const sz = 8 - j * 1.4;
-              ctx.globalAlpha = 0.7 * (1 - j / 4);
-              ctx.drawImage(glow, x - sz / 2, y - sz / 2, sz, sz);
-            }
-          }
-
-          ctx.globalAlpha = 1;
-          ctx.globalCompositeOperation = 'source-over';
-
-          drawLogoSpikes();
-        }
-
-        // Drawn above the logo image: spikes crossing onto it and its dots lighting up.
-        function drawLogoSpikes() {
-          sctx.clearRect(0, 0, W, H);
-          sctx.globalCompositeOperation = 'lighter';
-
-          for (let j = 0; j < L; j++) {
-            const age = now - logoLast[j];
-            if (age > 1.2) continue;
-            const e = Math.min(1, age / 0.08) * Math.exp(-age / 0.32);
-            const pupil = j === PUPIL;
-            const sz = LOGO[j * 3 + 2] * logoScale * (pupil ? 9 : 5) * (0.7 + 0.3 * e);
-            sctx.globalAlpha = e * 0.9;
-            sctx.drawImage(glow, logoX[j] - sz / 2, logoY[j] - sz / 2, sz, sz);
-          }
-
-          for (const e of logoEvents) {
-            const p = (now - e.t0) / (e.t1 - e.t0);
-            const tail = 0.18 * Math.min(1, 0.2 / (e.t1 - e.t0));
-            for (let j = 0; j < 4; j++) {
-              const q = p - j * tail;
-              if (q < 0) break;
-              const x = e.x0 + (logoX[e.b] - e.x0) * q;
-              const y = e.y0 + (logoY[e.b] - e.y0) * q;
-              const sz = 8 - j * 1.4;
-              sctx.globalAlpha = 0.7 * (1 - j / 4);
-              sctx.drawImage(glow, x - sz / 2, y - sz / 2, sz, sz);
-            }
-          }
-
-          sctx.globalAlpha = 1;
-          sctx.globalCompositeOperation = 'source-over';
-        }
-
-        function frame(dt) {
-          locate();
-          const m = morph(now);
-          geometry(m);
-          step(dt);
-          draw(m);
-        }
-
-        layout();
-
-        if (reduceMotion) {
-          // Settle the network offline, then render a single still frame.
-          now = MORPH_PERIOD * 0.3;
-          geometry(morph(now));
-          for (let t = 0; t < 4; t += 1 / 30) step(1 / 30);
-          draw(morph(now));
-          addEventListener('resize', () => {
-            layout();
-            geometry(morph(now));
-            draw(morph(now));
-          });
-          return;
-        }
-
-        addEventListener('resize', layout);
-        addEventListener('pointermove', (e) => {
-          if (pointer.seen) {
-            const d = Math.hypot(e.clientX - pointer.x, e.clientY - pointer.y);
-            pointer.energy = Math.min(pointer.energy + d * 0.02, 1.5);
-          }
-          pointer.x = e.clientX;
-          pointer.y = e.clientY;
-          pointer.seen = true;
-        }, { passive: true });
-        addEventListener('pointerleave', () => { pointer.seen = false; });
-
-        let prev = performance.now();
-        function loop(t) {
-          const dt = Math.min(0.05, (t - prev) / 1000);
-          prev = t;
-          frame(dt);
-          requestAnimationFrame(loop);
-        }
-        requestAnimationFrame(loop);
+        const sections = links.map((a) => document.querySelector(a.hash)).filter(Boolean);
+        const update = () => {
+          const y = scrollY + innerHeight * 0.3;
+          let current = sections[0];
+          for (const s of sections) if (s.offsetTop <= y) current = s;
+          if (innerHeight + scrollY >= document.body.scrollHeight - 2) current = sections[sections.length - 1];
+          links.forEach((a) => a.classList.toggle('active', a.hash === '#' + current.id));
+        };
+        addEventListener('scroll', update, { passive: true });
+        addEventListener('resize', update);
+        update();
       })();
     </script>
   </body>

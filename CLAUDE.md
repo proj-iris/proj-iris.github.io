@@ -1,31 +1,28 @@
-# IRIS landing page
+# IRIS website
 
-Static GitHub Pages site for IRIS, the JST NEXUS Japan–Vietnam project on a low-power event-driven AI system-on-chip (grant JPMJNX26D3). `index.html` is the whole site; logos are `iris-logo*.svg` / `.png`.
+Static GitHub Pages site for IRIS, the JST NEXUS Japan–Vietnam project on a low-power event-driven AI system-on-chip (grant JPMJNX26D3). `index.html` is the whole site: plain HTML/CSS with a small inline script, no libraries or build step.
 
-The page has two parts: the full-screen animated hero (`main`), and below it an opaque `.info` block (about, approach, partners, Ph.D. positions, contact) that scrolls over the canvases at `z-index: 3`. Project facts come from the coordination repo (`proj-iris/project-management`); keep them in sync with it. The Ph.D. call has a deadline (2026-11-20 for the April 2027 start), so update or remove that box once it passes.
+## Layout
 
-## Rule: the animation is frozen
+- A sticky header with the logo at the top left (`iris-mark.svg`, with no wordmark next to it; the eye from `iris-logo-transparent-no-text.svg` with a cropped viewBox) and a menu of in-page links. Below 760px the menu collapses behind a "Menu" button.
+- One `<section id="...">` per menu entry inside `main`. The script highlights the menu link of the section in view.
+- **To add a section:** add a `<section id="name">` in `main` and a matching `<li><a href="#name">Label</a></li>` in the menu.
+- Palette: `#b394df`, `#c5a6eb`, `#f5efff` on `#171321` (CSS variables on `:root`).
 
-Do not change the home-page animation in `index.html` (the inline script and the `#field` / `#spark` canvases) unless the owner explicitly asks. It was finalized on 2026-10-15. Other edits (text, layout, meta, logos) are fine, but leave the animation's code and behavior untouched; if a change would affect it, ask first.
+The animated spiking-neuron hero was removed on the owner's request on 2026-11-10; it is in the git history (commit 650345c and earlier) if it is ever wanted back.
 
-## How the animation works
+## Build and deploy
 
-Concept: the iris of an eye + the Japanese iris flower (*Iris ensata*) + the purple palette + spikes in a spiking neural network. Everything is plain canvas JS/CSS inline in `index.html`, no libraries.
+There is no build step. GitHub Pages serves the repo root of `main` at the custom domain in `CNAME`, so pushing to `main` publishes the site within a minute or two.
 
-- **`#field` canvas** (behind the content): radial fibers of leaky integrate-and-fire neurons around the logo `iris-logo-transparent.png`.
-  - Each fiber starts just outside the nearest dot of the logo's eye (`innerR`), skipping the IRIS lettering (`TEXT_BOX`). Dots shrink and pack tighter toward the logo; outer dots and fibers fade out, with no outer border line.
-  - Spikes travel **inward**, from the outer rim to the logo. Volleys start at the rim every 3–6 s; pointer movement injects current near the cursor (an event-camera nod).
-- **Eye ↔ flower morph**: the outline morphs from a circle (eye) to a Japanese iris over `MORPH_PERIOD = 40` s and back. The flower is three broad ruffled falls (at 90°, 210° and 330°) with three small standards between them, defined as disks in `PETALS`. It opens only partway (`FLOWER_STRENGTH = 0.7`; 1 is the full shape). Spikes at the base of the falls glow gold.
-- **`#spark` canvas** (above the logo, `pointer-events: none`): spikes jump from the fibers onto the logo's own dots and hop inward (`logoNext`) to the pupil, which flashes larger.
-  - `LOGO` holds the 127 circle coordinates copied from `iris-logo-transparent.svg` (320-unit viewBox). `PUPIL = 100` is the dot at (160, 160).
-- **Palette**: `#b394df`, `#c5a6eb`, `#f5efff` on `#171321`.
-- **Reduced motion**: with `prefers-reduced-motion`, a single still frame is drawn.
-- **Removed on request**: a spike raster strip at the bottom, the ring around the eye, and the petal outline.
+1. Edit `index.html` (and add any images next to it).
+2. Preview locally: `python3 -m http.server 8000` in this folder, then open http://localhost:8000. Opening `index.html` directly in a browser also works.
+3. Check phone width (about 390px) as well as desktop. For a headless check: `"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --screenshot=out.png --window-size=1280,2400 file://$PWD/index.html`. Headless Chrome won't go below about 500px wide, so to test a phone, load the page in a 390px `<iframe>` in a scratch HTML file.
+4. Commit and push to `main` of `proj-iris/proj-iris.github.io`.
+5. This repo is a submodule of `proj-iris/project-management` (at `website/`). After pushing here, commit the new submodule pointer there too (`git add website`).
 
-## If the logo changes
+`_site/` is local preview output from Jekyll or an editor plugin; do not commit it. This repo is public: everything in it, including this file and commit messages, can be read by anyone. Internal project details stay in the coordination repo.
 
-`LOGO`, `PUPIL` and `TEXT_BOX` must be re-derived from the new SVG; otherwise spikes land in the wrong places.
+## Content
 
-## Testing renders
-
-Headless Chrome barely advances `requestAnimationFrame`, and an early resize resets the network state. To check a given moment, render a scratch copy that runs `frame(1/60)` up to a fixed time inside a `setTimeout`, then screenshot it.
+Project facts and the member list come from the coordination repo (`proj-iris/project-management`, mainly `docs/team.md`); keep them in sync with it. Emails, admin staff and unconfirmed ECR candidates are not listed. The Ph.D. call has a deadline (2026-11-20 for the April 2027 start), so update or remove the "Join us" box once it passes.
