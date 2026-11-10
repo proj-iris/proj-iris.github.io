@@ -4,13 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#171321">
-    <meta name="description" content="IRIS — Event sensing project.">
-    <title>IRIS — Event sensing project</title>
+    <meta name="description" content="IRIS — a low-power, event-driven AI system-on-chip for edge computing. A JST NEXUS Japan–Vietnam joint research project of the University of Aizu and Le Quy Don Technical University (2027–2030).">
+    <title>IRIS — Low-power event-driven AI chip</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500&display=swap" rel="stylesheet">
     <style>
       :root { color-scheme: dark; }
+      html { scroll-behavior: smooth; }
       * { box-sizing: border-box; }
       body {
         margin: 0;
@@ -74,8 +75,100 @@
         width: 5px;
         height: 5px;
         border-radius: 50%;
-        background: #4f85bf;
+        background: #b394df;
       }
+      .status { text-decoration: none; pointer-events: auto; }
+      .status:hover { border-color: #b394df66; color: #c5a6eb; }
+
+      /* Information below the hero; opaque so it scrolls over the animation. */
+      .info {
+        position: relative;
+        z-index: 3;
+        background: #171321;
+        border-top: 1px solid #ffffff12;
+        padding: 4rem 1rem 3rem;
+        line-height: 1.65;
+        font-size: 1rem;
+      }
+      .info .wrap { max-width: 760px; margin: 0 auto; }
+      .info section + section { margin-top: 3.5rem; }
+      .info h1, .info h2 {
+        font-family: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-weight: 500;
+        color: #f5efff;
+        letter-spacing: -.01em;
+      }
+      .info h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1.2; margin: 0 0 1rem; }
+      .info h2 { font-size: 1.25rem; margin: 0 0 .9rem; }
+      .info p, .info li {
+        color: #c9cfd6;
+        font-size: 1rem;
+        letter-spacing: normal;
+        text-transform: none;
+        line-height: 1.65;
+      }
+      .info p + p { margin-top: .8rem; }
+      .info ul { margin: .4rem 0 0; padding-left: 1.2rem; }
+      .info li + li { margin-top: .35rem; }
+      .info a { color: #c5a6eb; }
+      .info strong { color: #f5efff; font-weight: 600; }
+      .eyebrow {
+        color: #b394df !important;
+        font-size: .75rem !important;
+        letter-spacing: .16em !important;
+        text-transform: uppercase !important;
+        margin-bottom: .6rem !important;
+      }
+      .facts {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: .75rem;
+        margin-top: 1.5rem;
+      }
+      .fact {
+        border: 1px solid #ffffff14;
+        border-radius: 10px;
+        padding: .9rem 1rem;
+        background: #ffffff05;
+      }
+      .fact b {
+        display: block;
+        font-family: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-weight: 500;
+        font-size: 1.35rem;
+        color: #f5efff;
+      }
+      .fact span { color: #9aa6b0; font-size: .85rem; }
+      .partners {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: .75rem;
+      }
+      .partner {
+        border: 1px solid #ffffff14;
+        border-radius: 10px;
+        padding: 1rem 1.1rem;
+      }
+      .partner p { font-size: .95rem; }
+      .partners { align-items: start; }
+      .info ul.members { list-style: none; padding: 0; margin: .6rem 0 0; }
+      .info ul.members li { font-size: .88rem; color: #9aa6b0; line-height: 1.45; }
+      .info ul.members li + li { margin-top: .45rem; }
+      .members b { display: block; color: #f5efff; font-weight: 500; font-size: .95rem; }
+      .partner .country { color: #9aa6b0; font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; }
+      .callout {
+        border: 1px solid #b394df55;
+        border-radius: 12px;
+        padding: 1.25rem 1.3rem;
+        background: #b394df0f;
+      }
+      .site-footer {
+        margin-top: 4rem;
+        padding: 1.5rem 0 0;
+        background: none;
+        border-top: 1px solid #ffffff12;
+      }
+      .site-footer p { color: #8c9ba4; font-size: .85rem; }
     </style>
   </head>
   <body>
@@ -88,10 +181,100 @@
         </div>
       </div>
       <footer>
-        <p>Event sensing project</p>
-        <p class="status">In stealth mode</p>
+        <p>Low-power event-driven AI chip for the edge</p>
+        <a class="status" href="#about"><p>Learn more ↓</p></a>
       </footer>
     </main>
+    <div class="info">
+      <div class="wrap">
+        <section id="about">
+          <p class="eyebrow">JST NEXUS · Japan–Vietnam joint research · 2027–2030</p>
+          <h1>A low-power, event-driven AI system-on-chip for edge computing</h1>
+          <p>Many edge devices that need AI, such as monitoring cameras, robots and people or animal detectors, run on little power and can't send their data to the cloud. IRIS builds an AI chip that works with an <strong>event camera</strong>: the camera reports only the pixels that change, and the chip computes only when those changes arrive.</p>
+          <p>The project is a joint effort of the <strong>University of Aizu</strong> (Japan) and the <strong>Institute of System Integration, Le Quy Don Technical University</strong> (Vietnam). It runs from January 2027 to June 2030 and also trains early-career researchers in low-power chip design.</p>
+          <div class="facts">
+            <div class="fact"><b>&lt; 1 W</b><span>ASIC power target</span></div>
+            <div class="fact"><b>50 fps</b><span>real time at 50 MHz</span></div>
+            <div class="fact"><b>80–90%</b><span>energy saving compared with an ANN on RGB frames</span></div>
+          </div>
+        </section>
+
+        <section id="approach">
+          <h2>Approach</h2>
+          <ul>
+            <li><strong>Event sensing.</strong> An event camera only reports changes, so a typical scene produces far less data than a normal camera.</li>
+            <li><strong>Spiking neural network accelerator.</strong> A dedicated event-driven accelerator processes only the incoming spikes and exploits sparsity in space and time.</li>
+            <li><strong>Approximate clock-gating.</strong> Inactive circuit blocks are switched off, and some clock events are skipped even when input is present, trading a small loss of accuracy for a large saving in energy.</li>
+            <li><strong>From model to silicon.</strong> The design goes from AI models and RTL through FPGA prototypes to ASIC tapeouts and a system deployed in real applications.</li>
+          </ul>
+        </section>
+
+        <section id="team">
+          <h2>Partners</h2>
+          <div class="partners">
+            <div class="partner">
+              <p class="country">Japan</p>
+              <p><strong><a href="https://u-aizu.ac.jp/en/">The University of Aizu</a></strong></p>
+              <ul class="members">
+                <li><b>DANG Nam Khanh</b> PI, Associate Professor</li>
+                <li><b>NITTA Koyo</b> Co-PI, Professor</li>
+                <li><b>BEN ABDALLAH Abderazek</b> Professor</li>
+                <li><b>SAITO Hiroshi</b> Professor</li>
+                <li><b>TOMIOKA Yoichi</b> Senior Associate Professor</li>
+                <li><b>SUZUKI Daisuke</b> Associate Professor</li>
+                <li><b>WANG Zhishang</b> Assistant Professor</li>
+              </ul>
+            </div>
+            <div class="partner">
+              <p class="country">Vietnam</p>
+              <p><strong>Institute of System Integration, Le Quy Don Technical University</strong></p>
+              <ul class="members">
+                <li><b>HOANG Van Phuc</b> PI, Associate Professor, Director</li>
+                <li><b>NGUYEN Van Tinh</b> Lecturer</li>
+                <li><b>TRAN Thai Ha</b> Lecturer</li>
+                <li><b>NGUYEN Van Trung</b> Head of Research Center for IC Design</li>
+                <li><b>NGUYEN Tien Phat</b> Deputy Head of Department</li>
+                <li><b>BUI Quy Thang</b> Head of Department</li>
+                <li><b>VU Hoang Gia</b> Head of Lab</li>
+                <li><b>HOANG Thi Yen</b> Lecturer</li>
+                <li><b>PHAM Cao Dai</b> Senior Lecturer</li>
+                <li><b>HOANG Minh Thien</b> Deputy Head of Department</li>
+              </ul>
+              <p class="country" style="margin-top:1.1rem">Collaborating institutions</p>
+              <ul class="members">
+                <li><b>PHAM Hoai Luan</b> Vietnam National University, Ho Chi Minh City</li>
+                <li><b>NGUYEN Duy Anh</b> University of Transport and Communications</li>
+                <li><b>MAI Duc Tho</b> Academy of Cryptography Techniques</li>
+                <li><b>NGUYEN Duc Minh</b> Hanoi University of Science and Technology</li>
+                <li><b>PHAM Thi Nhan</b> Hanoi University of Science and Technology</li>
+                <li><b>PHAM Xuan Thanh</b> Hanoi University of Industry</li>
+                <li><b>DO Ngoc Tuan</b> Telecommunications University</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="join">
+          <div class="callout">
+            <h2>Funded Ph.D. positions</h2>
+            <p>The project offers funded Ph.D. positions at the University of Aizu for Vietnamese researchers, starting in April or October 2027. Students work across the whole chip flow, from AI models and hardware design to FPGA prototypes and real chips.</p>
+            <p>For the April 2027 start, apply by <strong>Friday, November 20, 2026, 5:00 PM (JST)</strong>. Email a CV, a short research statement, academic transcripts and an English test score to <a href="mailto:khanh@u-aizu.ac.jp?subject=NEXUS%20Ph.D.%20application">khanh@u-aizu.ac.jp</a>.</p>
+          </div>
+        </section>
+
+        <section id="contact">
+          <h2>Contact</h2>
+          <ul>
+            <li>DANG Nam Khanh, University of Aizu: <a href="mailto:khanh@u-aizu.ac.jp">khanh@u-aizu.ac.jp</a></li>
+            <li>HOANG Van Phuc, Le Quy Don Technical University: <a href="mailto:phuchv@lqdtu.edu.vn">phuchv@lqdtu.edu.vn</a></li>
+          </ul>
+        </section>
+
+        <footer class="site-footer">
+          <p>Supported by JST NEXUS, Japan, Grant Number JPMJNX26D3. <a href="https://www.jst.go.jp/aspire/nexus/en/project/index.html">JST NEXUS projects</a></p>
+        </footer>
+      </div>
+    </div>
     <script>
       // Iris field: radial fibers of leaky integrate-and-fire neurons around the logo.
       // The outline slowly morphs between an eye's iris (circle) and an iris flower

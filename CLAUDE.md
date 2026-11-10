@@ -1,6 +1,8 @@
 # IRIS landing page
 
-Static GitHub Pages site for IRIS, an event sensing project. `index.html` is the whole site; logos are `iris-logo*.svg` / `.png`.
+Static GitHub Pages site for IRIS, the JST NEXUS Japan–Vietnam project on a low-power event-driven AI system-on-chip (grant JPMJNX26D3). `index.html` is the whole site; logos are `iris-logo*.svg` / `.png`.
+
+The page has two parts: the full-screen animated hero (`main`), and below it an opaque `.info` block (about, approach, partners, Ph.D. positions, contact) that scrolls over the canvases at `z-index: 3`. Project facts come from the coordination repo (`proj-iris/project-management`); keep them in sync with it. The Ph.D. call has a deadline (2026-11-20 for the April 2027 start), so update or remove that box once it passes.
 
 ## Rule: the animation is frozen
 
