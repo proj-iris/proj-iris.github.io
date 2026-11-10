@@ -8,6 +8,7 @@ Static GitHub Pages site for IRIS, the JST NEXUS Japan–Vietnam project on a lo
 - One `<section id="...">` per menu entry inside `main`. The script highlights the menu link of the section in view.
 - **To add a section:** add a `<section id="name">` in `main` and a matching `<li><a href="#name">Label</a></li>` in the menu.
 - Palette: `#b394df`, `#c5a6eb`, `#f5efff` on `#171321` (CSS variables on `:root`).
+- The footer credit line (E3Computing Group and "Site built with Claude Code") is hidden until the footer scrolls into view, then decodes left to right through random katakana and digits (the last part of the second script). With reduced motion or no JavaScript it shows plainly.
 - Background: the spiking-neuron animation (first script in `index.html`) runs in `.backdrop`, fixed in the middle of the window behind all content and faded by the wrapper's `opacity`. It draws radial fibers around the eye (`iris-logo-transparent-no-text.svg`, whose dots match the `LOGO` array) on `#field` and spikes over the eye on `#spark`. With reduced motion it renders one still frame. It was the full-screen hero until commit 650345c; on 2026-11-10 the hero was removed and the animation came back as this background.
 
 ## Build and deploy

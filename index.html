@@ -262,9 +262,15 @@
       }
       .site-footer .group-link a { color: #8c97a1; text-decoration: none; border-bottom: 1px dotted #8c97a166; }
       .site-footer .group-link a:hover { color: var(--accent-2); border-bottom-color: var(--accent-2); }
+      /* The credit line stays hidden until the footer scrolls into view, then decodes like falling code. */
+      .js .site-footer .group-link { visibility: hidden; }
+      .js .site-footer .group-link.decoding, .js .site-footer .group-link.done { visibility: visible; }
+      .site-footer .group-link, .site-footer .group-link a { transition: color .8s; }
+      .js .site-footer .group-link.decoding, .js .site-footer .group-link.decoding a { color: var(--accent); transition: none; }
     </style>
   </head>
   <body>
+    <script>document.body.classList.add('js');</script>
     <div class="backdrop" aria-hidden="true">
       <canvas id="field"></canvas>
       <div class="mark"><img src="iris-logo-transparent-no-text.svg" width="960" height="960" alt=""></div>
@@ -427,7 +433,7 @@
 
     <footer class="site-footer">
       Supported by JST NEXUS, Japan, Grant Number JPMJNX26D3. <a href="https://www.jst.go.jp/aspire/nexus/en/project/index.html">JST NEXUS projects</a>
-      <p class="group-link">IRIS is a project of the E3Computing Group: <a href="https://www.e3computing.org/">https://www.e3computing.org/</a></p>
+      <p class="group-link">IRIS is a project of the E3Computing Group: <a href="https://www.e3computing.org/">https://www.e3computing.org/</a> · Site built with <a href="https://claude.com/claude-code">Claude Code</a>.</p>
     </footer>
 
     <script>
@@ -888,6 +894,59 @@
         addEventListener('scroll', update, { passive: true });
         addEventListener('resize', update);
         update();
+      })();
+
+      // Footer credit: once the footer is in view, the line decodes left to right,
+      // with a short run of random glyphs ahead of the settled text.
+      (() => {
+        const line = document.querySelector('.site-footer .group-link');
+        const GLYPHS = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ01234567890';
+        const RUN = 6, SPEED = 45; // glyphs ahead of the cursor; characters per second
+        const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const random = () => GLYPHS[(Math.random() * GLYPHS.length) | 0];
+
+        const decode = () => {
+          const nodes = [];
+          const walker = document.createTreeWalker(line, NodeFilter.SHOW_TEXT);
+          while (walker.nextNode()) nodes.push({ node: walker.currentNode, text: walker.currentNode.data });
+          const total = nodes.reduce((n, t) => n + t.text.length, 0);
+          line.style.minHeight = line.offsetHeight + 'px';
+          line.classList.add('decoding');
+          const t0 = performance.now();
+          const tick = (t) => {
+            const cursor = ((t - t0) / 1000) * SPEED;
+            let offset = 0;
+            for (const { node, text } of nodes) {
+              let out = '';
+              for (let i = 0; i < text.length; i++) {
+                const k = offset + i;
+                if (k < cursor) out += text[i];
+                else if (k < cursor + RUN && text[i] !== ' ') out += random();
+                else if (k < cursor + RUN) out += ' ';
+              }
+              node.data = out;
+              offset += text.length;
+            }
+            if (cursor < total) requestAnimationFrame(tick);
+            else {
+              nodes.forEach(({ node, text }) => { node.data = text; });
+              line.classList.replace('decoding', 'done');
+              line.style.minHeight = '';
+            }
+          };
+          requestAnimationFrame(tick);
+        };
+
+        if (reduceMotion || !('IntersectionObserver' in window)) {
+          line.classList.add('done');
+          return;
+        }
+        const seen = new IntersectionObserver((entries) => {
+          if (!entries.some((e) => e.isIntersecting)) return;
+          seen.disconnect();
+          setTimeout(decode, 300);
+        }, { threshold: 0.5 });
+        seen.observe(document.querySelector('.site-footer'));
       })();
     </script>
   </body>
