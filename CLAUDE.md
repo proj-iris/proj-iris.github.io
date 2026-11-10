@@ -4,12 +4,11 @@ Static GitHub Pages site for IRIS, the JST NEXUS Japan–Vietnam project on a lo
 
 ## Layout
 
-- A sticky header with the logo at the top left (`iris-mark.svg`, with no wordmark next to it; the eye from `iris-logo-transparent-no-text.svg` with a cropped viewBox) and a menu of in-page links. Below 760px the menu collapses behind a "Menu" button.
+- A sticky header with the text "IRIS" at the top left and a menu of in-page links. There is no logo in the header. Below 760px the menu collapses behind a "Menu" button.
 - One `<section id="...">` per menu entry inside `main`. The script highlights the menu link of the section in view.
 - **To add a section:** add a `<section id="name">` in `main` and a matching `<li><a href="#name">Label</a></li>` in the menu.
 - Palette: `#b394df`, `#c5a6eb`, `#f5efff` on `#171321` (CSS variables on `:root`).
-
-The animated spiking-neuron hero was removed on the owner's request on 2026-11-10; it is in the git history (commit 650345c and earlier) if it is ever wanted back.
+- Background: the spiking-neuron animation (first script in `index.html`) runs in `.backdrop`, fixed in the middle of the window behind all content and faded by the wrapper's `opacity`. It draws radial fibers around the eye (`iris-logo-transparent-no-text.svg`, whose dots match the `LOGO` array) on `#field` and spikes over the eye on `#spark`. With reduced motion it renders one still frame. It was the full-screen hero until commit 650345c; on 2026-11-10 the hero was removed and the animation came back as this background.
 
 ## Build and deploy
 
